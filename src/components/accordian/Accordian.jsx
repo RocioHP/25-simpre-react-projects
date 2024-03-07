@@ -10,14 +10,25 @@ const Accordian = () => {
   
   //multiselection Logic
   const [enableMultiSelection, setEnableMultiSelection] = useState(false);
+  const [multiple, setMultiple] = useState([]);
 
   const toggleMultiselection = () => {
     setEnableMultiSelection((prev) => !prev);
   };
+  
   const handleMultiSelection = (getCurrentId) => {
+    let cpyMultiple = [...multiple];
+    const findIndexOfCurrentId = cpyMultiple.indexOf(getCurrentId)
 
+    if(findIndexOfCurrentId === -1) cpyMultiple.push(getCurrentId)
+    else cpyMultiple.splice(findIndexOfCurrentId, 1)
+
+    setMultiple(cpyMultiple);
   };
-  const [multiple, setMultiple] = useState([]);
+   
+
+  
+  
     return (
       
       <div className="flex flex-col items-center p-10">
@@ -27,15 +38,20 @@ const Accordian = () => {
         {data && data.length > 0 ? 
         data.map(dataItem=> <div>
           <div className="flex" onClick={enableMultiSelection 
-            ? () => handleMultiSelection(dataItem.id) : () => handleSingleSelection(dataItem.id)}>
+            ? () => handleMultiSelection(dataItem.id) 
+            : () => handleSingleSelection(dataItem.id)}>
               <h3>{dataItem.question}</h3>
               <span>+</span>
           </div>
-          {selected === dataItem.id ? (
+            {
+              enableMultiSelection ? 
+              multiple.indexOf(dataItem.id) !== -1 &&
               <div>
                 {dataItem.answer} 
+              </div> : selected === dataItem.id && <div>
+                {dataItem.answer} 
               </div>
-          ) : null}
+            }
         </div>) : <div>No data found !</div>
         }
       </div>
