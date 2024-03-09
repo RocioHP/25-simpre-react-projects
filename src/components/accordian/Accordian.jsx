@@ -36,8 +36,8 @@ const Accordian = () => {
           Enable Multiselection
         </button>
         {data && data.length > 0 ? 
-        data.map(dataItem=> <div>
-          <div className="flex" onClick={enableMultiSelection 
+        data.map((dataItem, index) => <div key={index}>
+          <div  className="flex" onClick={enableMultiSelection 
             ? () => handleMultiSelection(dataItem.id) 
             : () => handleSingleSelection(dataItem.id)}>
               <h3>{dataItem.question}</h3>
